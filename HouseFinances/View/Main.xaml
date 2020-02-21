@@ -1,0 +1,178 @@
+﻿<Window x:Class="HouseFinances.MainWindow"
+        x:Name="WindowsForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HouseFinances"
+        mc:Ignorable="d"
+        Title="Семейный кошелёк" Height="735" Width="900" MinWidth="900" MinHeight="735" Icon="../Resources/purse.ico"  WindowStartupLocation="CenterScreen">
+
+    <Grid Background="#FFAFCAF7">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="669*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="1" BorderBrush="#FF7DA9F2" BorderThickness="2">
+            <Label Name="lblStatus" FontSize="12" FontFamily="Times New Roman" Margin="0 -2"/>
+        </Border>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="265*"/>
+                <ColumnDefinition Width="635*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="285"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="170"/>
+            </Grid.RowDefinitions>
+
+            <Menu Grid.ColumnSpan="3" Background="#FFAFCAF7">
+                <MenuItem Header="_Файл" FontFamily="Times New Roman" FontSize="12" Margin="2,5,2,2">
+                    <MenuItem Header="_Выход" Background="#FFAFCAF7" Command="{Binding Path=Close}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                </MenuItem>
+                <MenuItem Header="_Приход" FontFamily="Times New Roman" FontSize="12" Margin="2,5,2,2">
+                    <MenuItem Header="_Добавить" Background="#FFAFCAF7" Command="{Binding Path=AddIncoming}" CommandParameter="{Binding ElementName=ComboBoxIncoming}"/>
+                    <MenuItem Header="_Изменить" Background="#FFAFCAF7" Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                    <MenuItem Header="_Удалить" Background="#FFAFCAF7" Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                </MenuItem>
+                <MenuItem Header="_Расход" FontFamily="Times New Roman" FontSize="12" Margin="2,5,2,2">
+                    <MenuItem Header="_Добавить" Background="#FFAFCAF7" Command="{Binding Path=AddExpense}" CommandParameter="{Binding ElementName=ComboBoxExpense}"/>
+                    <MenuItem Header="_Изменить" Background="#FFAFCAF7" Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                    <MenuItem Header="_Удалить" Background="#FFAFCAF7" Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                </MenuItem>
+                <MenuItem Header="_Аналитика" FontFamily="Times New Roman" FontSize="12" Margin="2,5,2,2">
+                    <MenuItem Header="_График" Background="#FFAFCAF7">
+                        <MenuItem Header="_Общий" Background="#FFAFCAF7" Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                        <MenuItem Header="_Приход" Background="#FFAFCAF7" Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                        <MenuItem Header="_Расход" Background="#FFAFCAF7" Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                    </MenuItem>
+                    <MenuItem Header="_Диаграмма" Background="#FFAFCAF7">
+                        <!-- <MenuItem Header="_Общий" Background="#FFAFCAF7" Click="DiagramAll_Click"/> -->
+                        <MenuItem Header="_Приход" Background="#FFAFCAF7" Command="{Binding Path=DiagramIncoming}" CommandParameter="{Binding ElementName=DataGridIncoming}"/>
+                        <MenuItem Header="_Расход" Background="#FFAFCAF7" Command="{Binding Path=DiagramExpense}" CommandParameter="{Binding ElementName=DataGridExpense}"/>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Базы данных" FontFamily="Times New Roman" FontSize="12" Margin="2,5,2,2">
+                    <MenuItem Header="_Редактор категорий" Background="#FFAFCAF7" Command="{Binding Path=Category}"/>
+                </MenuItem>
+                <MenuItem Header="_Справка" FontFamily="Times New Roman" FontSize="12" Margin="2,5,2,2">
+                    <MenuItem Header="_Помощь" Background="#FFAFCAF7" Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                    <MenuItem Header="_Сайт программы" Background="#FFAFCAF7" Command="{Binding Path=Web}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                    <MenuItem Header="_О программе" Background="#FFAFCAF7" Command="{Binding Path=About}"/>
+                </MenuItem>
+            </Menu>
+            <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" BorderBrush="#FF7DA9F2" BorderThickness="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition Height="87"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <ComboBox Margin="65,8,65,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="116" Height="24" ItemsSource="{Binding Path=ListYearsMonths}" Background="#FFAFCAF7" 
+                              Text="{Binding Path=YearMonth}" SelectedIndex="{Binding Path=Index}" SelectedValue="{Binding Path=YearMonth}"/>
+                    <Grid x:Name="balance" Grid.Row="1" HorizontalAlignment="Center" Width="265">
+                        <Label Margin="24,0,0,0" Foreground="Blue" FontWeight="Bold" Content="Остаток"/>
+                        <Label Margin="0,0,40,0" Foreground="Blue" FontWeight="Bold" HorizontalAlignment="Right" Content="{Binding Path=MonthBalance.OldMonth}"/>
+                        <Label Margin="0,0,12,0" Foreground="Blue" FontWeight="Bold" HorizontalAlignment="Right" Content="руб."/>
+                        <Label Margin="24,20,0,0" Foreground="Green" FontWeight="Bold" Content="Приход"/>
+                        <Label Margin="0,20,40,0" Foreground="Green" FontWeight="Bold" HorizontalAlignment="Right" Content="{Binding Path=MonthBalance.Incoming}"/>
+                        <Label Margin="0,20,12,0" Foreground="Green" FontWeight="Bold" HorizontalAlignment="Right" Content="руб."/>
+                        <Label Margin="24,40,0,0" Foreground="Red" FontWeight="Bold" Content="Расход"/>
+                        <Label Margin="0,40,40,0" Foreground="Red" FontWeight="Bold" HorizontalAlignment="Right" Content="{Binding Path=MonthBalance.Expense}"/>
+                        <Label Margin="0,40,12,0" Foreground="Red" FontWeight="Bold" HorizontalAlignment="Right" Content="руб."/>
+                        <Label Margin="24,60,0,0" Foreground="Black" FontWeight="Bold" Content="Баланс"/>
+                        <Label Margin="0,60,40,0" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Right" Content="{Binding Path=MonthBalance.Balance}"/>
+                        <Label Margin="0,60,12,0" Foreground="Black" FontWeight="Bold" HorizontalAlignment="Right" Content="руб."/>
+                    </Grid>
+                    <DataGrid Name="DataGridAll"  Margin="0,8,0,0" Grid.Row="2" Background="#FFAFCAF7" RowBackground="#FFAFCAF7" ItemsSource="{Binding Path=ListAll}" AutoGenerateColumns="False"
+                              HorizontalGridLinesBrush="#FF7DA9F2" VerticalGridLinesBrush="#FF7DA9F2" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False"
+                              IsReadOnly="True">
+                        <DataGrid.Resources>
+                            <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#FFAFCAF7"/>
+                                <Setter Property="BorderBrush" Value="#FF7DA9F2"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="MinHeight" Value="25"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Day}" Header="День" Width="40"/>
+                            <DataGridTextColumn Binding="{Binding Incoming}" Header="Приход" Width="100*"/>
+                            <DataGridTextColumn Binding="{Binding Expense}" Header="Расход" Width="100*"/>
+                            <DataGridTextColumn Width="25"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+            <Border Grid.Row="1" Grid.Column="1" BorderBrush="#FF7DA9F2" BorderThickness="2">
+                <Grid>
+                    <Label Grid.Row="1" Margin="8,8,0,0" Foreground="Green" FontWeight="Bold" Content="ПРИХОДЫ В"/>
+                    <ComboBox x:Name="ComboBoxIncoming" ItemsSource="{Binding Path=ListYearsMonths}" Margin="95,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="24" Width="116"
+                              Background="#FFAFCAF7" Text="{Binding Path=YearMonth}" SelectedIndex="{Binding Path=Index}" SelectedValue="{Binding Path=YearMonth}"/>
+                    <Button x:Name="ButtonIncomingAdd" Margin="250,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="24" Width="70" Content="Добавить" Background="#FFAFCAF7"
+                            Command="{Binding Path=AddIncoming}" CommandParameter="{Binding ElementName=ComboBoxIncoming}"/>
+                    <Button x:Name="ButtonIncomingDel" Margin="325,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="24" Width="70" Content="Удалить" Background="#FFAFCAF7"
+                            Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                    <Button x:Name="ButtonIncomingGraph" Margin="515,9,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="24" Width="100" Content="Показать график" Background="#FFAFCAF7"
+                            Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                    <DataGrid Name="DataGridIncoming"  Margin="0,40,0,0" Grid.Row="2" Background="#FFAFCAF7" ItemsSource="{Binding Path=ListIncoming}" AutoGenerateColumns="False" RowBackground="#FFAFCAF7"
+                              HorizontalGridLinesBrush="#FF7DA9F2" VerticalGridLinesBrush="#FF7DA9F2" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" IsReadOnly="True">
+                        <DataGrid.Resources>
+                            <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#FFAFCAF7"/>
+                                <Setter Property="BorderBrush" Value="#FF7DA9F2"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="MinHeight" Value="25"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Day}" Header="День" Width="40"/>
+                            <DataGridTextColumn Binding="{Binding Sum}" Header="Сумма" Width="120*"/>
+                            <DataGridTextColumn Binding="{Binding Category}" Header="Категория" Width="150*"/>
+                            <DataGridTextColumn Binding="{Binding Product}" Header="Наименование" Width="150*"/>
+                            <DataGridTextColumn Binding="{Binding Description}" Header="Пояснение" Width="120*"/>
+                            <DataGridTextColumn Width="25"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+            <Border Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" BorderBrush="#FF7DA9F2" BorderThickness="2">
+                <Grid>
+                    <Label Grid.Row="1" Margin="8,8,0,0" Foreground="Red" FontWeight="Bold" Content="РАСХОДЫ В"/>
+                    <ComboBox x:Name="ComboBoxExpense" ItemsSource="{Binding Path=ListYearsMonths}" Margin="95,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="24" Width="116" Background="#FFAFCAF7"
+                              Text="{Binding Path=YearMonth}" SelectedIndex="{Binding Path=Index}" SelectedValue="{Binding Path=YearMonth}"/>
+                    <Button x:Name="ButtonExpenseAdd" Margin="250,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="24" Width="70" Content="Добавить" Background="#FFAFCAF7" Command="{Binding Path=AddExpense}" CommandParameter="{Binding ElementName=ComboBoxExpense}"/>
+                    <Button x:Name="ButtonExpenseDel" Margin="325,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="24" Width="70" Content="Удалить" Background="#FFAFCAF7"
+                            Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                    <Button x:Name="ButtonExpenseGraph" Margin="515,9,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Height="24" Width="100" Content="Показать график" Background="#FFAFCAF7" Command="{Binding Path=Demo}" CommandParameter="{Binding ElementName=WindowsForm}"/>
+                    <DataGrid Name="DataGridExpense"  Margin="0,40,0,0" Grid.Row="2" Background="#FFAFCAF7" RowBackground="#FFAFCAF7" ItemsSource="{Binding Path=ListExpense}" AutoGenerateColumns="False"
+                              HorizontalGridLinesBrush="#FF7DA9F2" VerticalGridLinesBrush="#FF7DA9F2" CanUserResizeRows="False" CanUserSortColumns="False" CanUserReorderColumns="False" IsReadOnly="True">
+                        <DataGrid.Resources>
+                            <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#FFAFCAF7"/>
+                                <Setter Property="BorderBrush" Value="#FF7DA9F2"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="MinHeight" Value="25"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Day}" Header="День" Width="40"/>
+                            <DataGridTextColumn Binding="{Binding Sum}" Header="Сумма" Width="120*"/>
+                            <DataGridTextColumn Binding="{Binding Category}" Header="Категория" Width="150*"/>
+                            <DataGridTextColumn Binding="{Binding Product}" Header="Наименование" Width="150*"/>
+                            <DataGridTextColumn Binding="{Binding Description}" Header="Пояснение" Width="120*"/>
+                            <DataGridTextColumn Width="25"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+            <Border Grid.Row="3" Grid.Column="0" BorderBrush="#FF7DA9F2" BorderThickness="2">
+                <Calendar Background="#FFAFCAF7"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
